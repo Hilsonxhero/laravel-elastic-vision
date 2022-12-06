@@ -1,0 +1,46 @@
+{
+    "name": "hilsonxhero/xauth",
+    "description": "sample package for test",
+    "keywords": [
+        "hilsonxhero"
+    ],
+    "homepage": "https://github.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hilson",
+            "email": "hilsonxhero.me@gmail.com",
+            "role": "developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hilsonxhero\\Xauth\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hilsonxhero\\Xauth\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hilsonxhero\\Xauth\\Providers\\ServiceProvider"
+            ],
+            "aliases": {
+                "Xauth": "Hilsonxhero\\Xauth\\Facade\\XauthFacade"
+            }
+        }
+    }
+}
