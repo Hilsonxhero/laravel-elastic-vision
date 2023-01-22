@@ -22,7 +22,7 @@
         "illuminate/support": "^9.0",
         "laravel/scout": "^9.0",
         "webmozart/assert": "^1.10",
-        "elasticsearch/elasticsearch": "^8.5"
+        "elasticsearch/elasticsearch": "^8.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.10"
