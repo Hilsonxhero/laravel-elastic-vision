@@ -4,7 +4,6 @@ namespace Hilsonxhero\ElasticVision\Providers;
 
 use Laravel\Scout\Builder;
 use Illuminate\Foundation\Application;
-use Hilsonxhero\ElasticVision\ElasticVision;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Hilsonxhero\ElasticVision\Infrastructure\Scout\ElasticEngine;
 use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticDocumentAdapter;
@@ -20,9 +19,6 @@ class ServiceProvider extends BaseServiceProvider
 
     public function register(): void
     {
-        $this->app->bind('ElasticVision', function () {
-            return new ElasticVision;
-        });
     }
 
     /**

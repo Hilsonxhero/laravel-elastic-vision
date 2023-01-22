@@ -8,9 +8,9 @@ use Countable;
 
 class Results implements Countable
 {
-    private \Elastic\Elasticsearch\Response\Elasticsearch $rawResults;
+    private $rawResults;
 
-    public function __construct(\Elastic\Elasticsearch\Response\Elasticsearch $rawResults)
+    public function __construct(\Elastic\Elasticsearch\Response\Elasticsearch | array $rawResults)
     {
         $this->rawResults = $rawResults;
     }

@@ -1,6 +1,6 @@
 {
     "name": "hilsonxhero/elasticvision",
-    "description": "ElasticVision driver for Laravel Scout.",
+    "description": "Elasticsearch driver for Laravel Scout.",
     "keywords": [
         "Laravel",
         "Scout",
@@ -8,7 +8,7 @@
         "Elastic",
         "search"
     ],
-    "homepage": "https://github.com",
+    "homepage": "https://github.com/Hilsonxhero/laravel-elastic-vision",
     "license": "MIT",
     "authors": [
         {
@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": "8.0.*||8.1.*",
+        "php": "8.0.*||8.1.*||8.2.*",
         "illuminate/support": "^9.0",
         "laravel/scout": "^9.0",
         "webmozart/assert": "^1.10",
@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Hilsonxhero\\ElasticVision\\": "tests"
+            "Hilsonxhero\\ElasticVision\\Tests\\": "tests"
         }
     },
     "scripts": {
