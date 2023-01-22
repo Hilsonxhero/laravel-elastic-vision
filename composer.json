@@ -1,8 +1,12 @@
 {
-    "name": "hilsonxhero/xauth",
-    "description": "sample package for test",
+    "name": "hilsonxhero/elasticvision",
+    "description": "ElasticVision driver for Laravel Scout.",
     "keywords": [
-        "hilsonxhero"
+        "Laravel",
+        "Scout",
+        "Elasticsearch",
+        "Elastic",
+        "search"
     ],
     "homepage": "https://github.com",
     "license": "MIT",
@@ -14,19 +18,23 @@
         }
     ],
     "require": {
-        "php": "^8.0.2"
+        "php": "8.0.*||8.1.*",
+        "illuminate/support": "^9.0",
+        "laravel/scout": "^9.0",
+        "webmozart/assert": "^1.10",
+        "elasticsearch/elasticsearch": "^8.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
-            "Hilsonxhero\\Xauth\\": "src"
+            "Hilsonxhero\\ElasticVision\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Hilsonxhero\\Xauth\\": "tests"
+            "Hilsonxhero\\ElasticVision\\": "tests"
         }
     },
     "scripts": {
@@ -36,10 +44,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Hilsonxhero\\Xauth\\Providers\\ServiceProvider"
+                "Hilsonxhero\\ElasticVision\\Providers\\ServiceProvider"
             ],
             "aliases": {
-                "Xauth": "Hilsonxhero\\Xauth\\Facade\\XauthFacade"
+                "ElasticVision": "Hilsonxhero\\ElasticVision\\Facade\\ElasticVisionFacade"
             }
         }
     }

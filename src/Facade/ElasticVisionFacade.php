@@ -1,6 +1,6 @@
 <?php
 
-namespace Hilsonxhero\Xauth\Facade;
+namespace Hilsonxhero\ElasticVision\Facade;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Facade;
 
 
 /**
- * Class XauthFacade
- * @package Hilsonxhero\Xauth\Facade
+ * Class ElasticVisionFacade
+ * @package Hilsonxhero\ElasticVision\Facade
  *
  * @method static string store()
  *
- * @see \Hilsonxhero\Xauth\
+ * @see \Hilsonxhero\ElasticVision\
  */
 
-class XauthFacade extends Facade
+class ElasticVisionFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -25,6 +25,6 @@ class XauthFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'Xauth';
+        return 'ElasticVision';
     }
 }
