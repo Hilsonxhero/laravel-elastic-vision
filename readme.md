@@ -82,7 +82,7 @@ Only a simple check for ID is possible besides the standard fuzzy term search:
 $posts = Post::search('lorem ipsum')->get();
 ```
 
-Explorer expands your possibilities using query builders to write more complex queries.
+ElasticVision expands your possibilities using query builders to write more complex queries.
 
 For example, to get all posts that:
 

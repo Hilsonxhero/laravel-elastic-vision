@@ -10,46 +10,146 @@ To get started with Elasticsearch and Kibana, create a `docker-compose.yml` file
 After that, run `docker-compose up -d` and you will have an elasticsearch instance running at localhost:9200 and a Kibana instance at localhost:5601
 
 ```yaml
-version: '2.2'
+# For more information: https://laravel.com/docs/sail
+version: '3'
 services:
-  es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
-    container_name: es01
-    environment:
-      - node.name=es01
-      - cluster.name=es-docker-cluster
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - data01:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-    networks:
-      - elastic
+    laravel.test:
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.1/app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
 
-  kib01:
-    image: docker.elastic.co/kibana/kibana:7.9.3
-    container_name: kib01
-    ports:
-      - 5601:5601
-    environment:
-      ELASTICSEARCH_URL: http://es01:9200
-      ELASTICSEARCH_HOSTS: http://es01:9200
-    networks:
-      - elastic
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+        volumes:
+            - 'sail-mysql:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - sail
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
+            retries: 3
+            timeout: 5s
 
-volumes:
-  data01:
-    driver: local
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - 8090:80
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: ${DB_USERNAME}
+            PMA_PASSWORD: ${DB_PASSWORD}
+            PWA_PORT: 3306
 
+        volumes:
+            - /sessions
+
+        depends_on:
+            - mysql
+        networks:
+            - sail
+        links:
+            - mysql
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.6.0
+        container_name: elasticsearch
+        environment:
+            - xpack.security.enabled=false
+            - "discovery.type=single-node"
+        networks:
+            - sail
+           volumes:
+             - data01:/usr/share/elasticsearch/data
+        ports:
+            - "9200:9200"
+        deploy:
+            resources:
+                limits:
+                    memory: "2000M"
+    kibana:
+        container_name: kibana
+        image: docker.elastic.co/kibana/kibana:8.6.0
+        environment:
+            - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+        ports:
+            - "5601:5601"
+        networks:
+            - sail
+        depends_on:
+            - elasticsearch
 networks:
-  elastic:
-    driver: bridge
+    sail:
+        driver: bridge
+volumes:
+    sail-mysql:
+        driver: local
+
+    sail-phpmyadmin:
+        driver: local
+
+
+```
+
+elasticvision.php config
+
+```php
+
+<?php
+
+declare(strict_types=1);
+
+return [
+    /*
+     * There are different options for the connection. Since ElasticVision uses the Elasticsearch PHP SDK
+     * under the hood, all the host configuration options of the SDK are applicable here. See
+     * https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/configuration.html
+     */
+    'connection' => [
+        'host' => 'elasticsearch:9200',
+        'port' => '9200',
+        'scheme' => 'http',
+    ],
+
+    /**
+     * An index may be defined on an Eloquent model or inline below. A more in depth explanation
+     * of the mapping possibilities can be found in the documentation of ElasticVision's repository.
+     */
+    'indexes' => [
+        \Modules\Product\Entities\Product::class
+    ],
+
+    /**
+     * You may opt to keep the old indices after the alias is pointed to a new index.
+     * A model is only using index aliases if it implements the Aliased interface.
+     */
+    'prune_old_aliases' => true,
+];
+
 
 ```
 
@@ -60,7 +160,7 @@ The only point where you should diverge from the docs is the driver for scout (i
 'driver' => 'elastic',
 ```
 
-After that, you can define your first index in config/explorer.php:
+After that, you can define your first index in config/elasticvision.php:
 
 ```php
 'indexes' => [

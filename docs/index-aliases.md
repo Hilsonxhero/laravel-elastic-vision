@@ -9,7 +9,7 @@ When updating an index it is recreated to a new index with a unique name.
 The "write" alias is pointed to the new index and all Scout updates will be forwarded to the "write" index.
 After all entities are imported the "read" alias will also be pointed to the new index.
 
-If you wish to keep the old indices set `prune_old_aliases` to false in `config/explorer.php`
+If you wish to keep the old indices set `prune_old_aliases` to false in `config/elasticvision.php`
 
 ## Using aliases
 

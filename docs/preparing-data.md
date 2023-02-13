@@ -3,7 +3,7 @@
 [Text analysis](text-analysis.md) is perfect when you want to alter how Elasticsearch deals with a query, or with the data when it is being indexed.
 However, sometimes you do not necessarily want to meddle with analyzer, but rather just make a quick change to the data _before_ it is indexed, perhaps conditionally.
 
-For this, Explorer gives you the ability to 'prepare' your searchable data.
+For this, ElasticVision gives you the ability to 'prepare' your searchable data.
 To use this you will need to implement the `Hilsonxhero\ElasticVision\Application\BePrepared` interface on your model and add the `prepare($data)` function.
 The data that is passed to the prepare function is what Laravel Scout [generates](https://laravel.com/docs/scout#configuring-searchable-data) in the `toSearchableArray()` method.
 

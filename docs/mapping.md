@@ -9,10 +9,10 @@ I recommend that you read the [documentation on arrays](https://www.elastic.co/g
 
 ## Using the configuration
 
-As you may already have read, you may define the mapping by publishing the Explorer configuration and editing config/explorer.php
+As you may already have read, you may define the mapping by publishing the ElasticVision configuration and editing config/elasticvision.php
 
 ```bash
-php artisan vendor:publish --tag=explorer.config
+php artisan vendor:publish --tag=elasticvision.config
 ```
 
 Each index must have a unique name. You do not have to set the type of every field in your model (or [searchable data](https://laravel.com/docs/scout#configuring-searchable-data)),
@@ -45,7 +45,7 @@ return [
 ## Using the model
 
 Below is an example of a Post model generated with `php artisan make:model Post` in Laravel 8 and modified for Laravel Scout
-with the Searchable trait and the Explored interface for Explorer's mapping using the model.
+with the Searchable trait and the Explored interface for ElasticVision's mapping using the model.
 If you use the configuration method described above you will still need the trait, but not the interface.
 
 ```php
@@ -80,7 +80,7 @@ class Post extends Model implements Explored
 As the interface states, you now need to write a `mappableAs()` function that will give the (partial) mapping for the index where posts will end up.
 The name of the index in this case is inferred from the `searchableAs()` function provided by the Searchable trait. Overwrite this method if you want a different index name.
 
-The last thing that is necessary is tell Explorer that you want this model to be indexed.
+The last thing that is necessary is tell ElasticVision that you want this model to be indexed.
 Publish the configuration file and add the model to the list of indexes.
 
 ```php
@@ -113,7 +113,7 @@ return [
 
 So far each mapping was for a simple field. You will very likely want to nest data.
 For example, a post has an author and this might be another object or model.
-Elasticsearch calls this a nested mapping, and Explorer supports this as follows for both methods of setting up your mapping:
+Elasticsearch calls this a nested mapping, and ElasticVision supports this as follows for both methods of setting up your mapping:
 
 ```php
     [

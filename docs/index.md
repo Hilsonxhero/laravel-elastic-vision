@@ -1,4 +1,4 @@
-# Explorer
+# ElasticVision
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 
@@ -15,12 +15,12 @@ composer require hilsonxhero/laravel-elastic-vision
 You will need the configuration file to define your indexes:
 
 ```bash
-php artisan vendor:publish --tag=explorer.config
+php artisan vendor:publish --tag=elasticvision.config
 ```
 
 Also do not forget to follow the [installation instructions for Laravel Scout](https://laravel.com/docs/scout#installation) and set the driver to `elastic`.
 
-# Explorer documentation
+# ElasticVision documentation
 
 - [Quickstart](quickstart.md)
 - [Connection](connection.md)

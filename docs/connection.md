@@ -1,11 +1,12 @@
 # Connection
 
-Explorer connects to ElasticSearch through the PHP ElasticSearch client and has several options to configure a connection.
-The connection configuration is defined `config/explorer.php`. 
+ElasticVision connects to ElasticSearch through the PHP ElasticSearch client and has several options to configure a connection.
+The connection configuration is defined `config/elasticvision.php`.
 
 ## Basic
 
 The most basic connection is with http without authorization.
+
 ```php
     return [
         'connection' => [
@@ -19,6 +20,7 @@ The most basic connection is with http without authorization.
 ## Elastic Cloud ID
 
 Another connection option is to use an elastic cloud id as shown below
+
 ```php
     return [
         'connection' => [
@@ -84,6 +86,7 @@ From Elastic 8 and upwards TLS is becoming the default, even in development. Thi
 ```
 
 To disable TLS verification set it to `false`. **NOT recommended for production**.
+
 ```php
     return [
         'connection' => [
@@ -98,6 +101,7 @@ To disable TLS verification set it to `false`. **NOT recommended for production*
 ```
 
 ## TLS connection with a public certificate and private key
+
 ```
     return [
         'connection' => [
@@ -118,7 +122,7 @@ Elastic can also have multiple possible connections
 
 ```php
     use Elasticsearch\ConnectionPool\Selectors\RoundRobinSelector;
-    
+
     return [
         'connection' => [
             'host' => 'localhost',

@@ -1,9 +1,9 @@
 # Pagination and search result size
 
-You can use Laravel Scout's [pagination](https://laravel.com/docs/scout#pagination) feature to get paginated results from Explorer.
+You can use Laravel Scout's [pagination](https://laravel.com/docs/scout#pagination) feature to get paginated results from ElasticVision.
 
 By default, Elasticsearch returns only the first 10 search results as you can see in their [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html).
-Laravel Scout has a `take()` method and Explorer uses that to set a custom search result size for Elasticsearch.
+Laravel Scout has a `take()` method and ElasticVision uses that to set a custom search result size for Elasticsearch.
 For example to get a maximum of 300 search results:
 
 ```php

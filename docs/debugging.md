@@ -1,7 +1,7 @@
 #Debugging
 Sometimes you might wonder why certain results are or aren't returned.
 
-Here is an example from the Explorer demo app, although not with a complex query:
+Here is an example from the ElasticVision demo app, although not with a complex query:
 
 ```php
 class SearchController
