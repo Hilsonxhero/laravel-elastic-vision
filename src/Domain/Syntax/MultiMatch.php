@@ -12,16 +12,19 @@ class MultiMatch implements SyntaxInterface
 
     private mixed $fuzziness;
 
-    public function __construct(string $value, ?array $fields = null, $fuzziness = 'auto')
+    private $prefix_length;
+
+    public function __construct(string $value, ?array $fields = null, $fuzziness = 'auto', $prefix_length = 0)
     {
         $this->value = $value;
         $this->fields = $fields;
         $this->fuzziness = $fuzziness;
+        $this->prefix_length = $prefix_length;
     }
 
     public function build(): array
     {
-        $query = ['query' => $this->value ];
+        $query = ['query' => $this->value];
 
         if ($this->fields !== null) {
             $query['fields'] = $this->fields;
@@ -31,6 +34,11 @@ class MultiMatch implements SyntaxInterface
             $query['fuzziness'] = $this->fuzziness;
         }
 
-        return [ 'multi_match' => $query ];
+
+        if (!empty($this->prefix_length)) {
+            $query['prefix_length'] = $this->prefix_length;
+        }
+
+        return ['multi_match' => $query];
     }
 }
