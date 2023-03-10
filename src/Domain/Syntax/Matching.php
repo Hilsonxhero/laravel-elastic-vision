@@ -155,7 +155,7 @@ class Matching implements SyntaxInterface
             $query['boost'] = $this->getBoost();
         }
 
-        return ['match' => [ $this->field => $query ] ];
+        return ['match' => [$this->field => $query]];
     }
 
     private function getAnalyzer(): ?string
