@@ -9,7 +9,7 @@ Elasticsearch driver for Laravel Scout with the power of Elasticsearch's queries
 Via Composer
 
 ```bash
-composer require hilsonxhero/laravel-elastic-vision
+composer require hilsonxhero/elasticvision
 ```
 
 You will need the configuration file to define your indexes:
