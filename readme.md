@@ -109,10 +109,6 @@ Be sure you have configured your indexes first in `config/elasticvision.php` and
 
 - [Hilsonxhero][link-author]
 
-## License
-
-MIT. Please see the [license file](license.md) for more information.
-
 [ico-version]: https://img.shields.io/packagist/v/hilsonxhero/elasticvision.svg?style=flat-square
 [ico-actions]: https://img.shields.io/github/workflow/status/hilsonxhero/laravel-elastic-vision/CI?label=CI%2FCD&style=flat-square
 [link-packagist]: https://packagist.org/packages/hilsonxhero/laravel-elastic-vision

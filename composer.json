@@ -9,7 +9,6 @@
         "search"
     ],
     "homepage": "https://github.com/Hilsonxhero/laravel-elastic-vision",
-    "license": "MIT",
     "authors": [
         {
             "name": "hilson",
@@ -25,7 +24,7 @@
         "elasticsearch/elasticsearch": "^8.6"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "~9.0"
     },
     "autoload": {
         "psr-4": {
@@ -46,6 +45,11 @@
             "providers": [
                 "Hilsonxhero\\ElasticVision\\Providers\\ServiceProvider"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "infection/extension-installer": false
         }
     }
 }
