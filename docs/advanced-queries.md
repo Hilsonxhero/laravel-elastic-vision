@@ -43,3 +43,20 @@ $results = Post::search('Self-steering')
     ->field('published_at')
     ->get();
 ```
+
+## Query properties
+
+Elastic has a multitude of options one can add to its queries.
+
+In Explorer one can easily add these with Query Properties, you can create a class , implement the `QueryProperty` interface
+and pass it to the query. An example of this is source field filtering which we included in the SourceFilter class.
+
+```php
+use App\Models\Post;
+use Hilsonxhero\ElasticVision\Domain\Query\QueryProperties\SourceFilter;
+
+$results = Post::search('Self-steering')
+    ->field('id')
+    ->property(SourceFilter::empty()->include('*.description')->exclude('*_secret'))
+    ->get();
+```

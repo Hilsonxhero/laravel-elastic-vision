@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Hilsonxhero\ElasticVision\Infrastructure\Scout;
 
-use Hilsonxhero\ElasticVision\Application\SearchableFields;
-use Hilsonxhero\ElasticVision\Application\SearchCommandInterface;
-use Hilsonxhero\ElasticVision\Domain\Query\Query;
-use Hilsonxhero\ElasticVision\Domain\Syntax\Compound\BoolQuery;
-use Hilsonxhero\ElasticVision\Domain\Syntax\Compound\QueryType;
-use Hilsonxhero\ElasticVision\Domain\Syntax\MultiMatch;
-use Hilsonxhero\ElasticVision\Domain\Syntax\Sort;
-use Hilsonxhero\ElasticVision\Domain\Syntax\Term;
 use Laravel\Scout\Builder;
 use Webmozart\Assert\Assert;
+use Hilsonxhero\ElasticVision\Domain\Query\Query;
+use Hilsonxhero\ElasticVision\Domain\Syntax\Sort;
+use Hilsonxhero\ElasticVision\Domain\Syntax\Term;
+use Hilsonxhero\ElasticVision\Domain\Syntax\MultiMatch;
+use Hilsonxhero\ElasticVision\Application\SearchableFields;
+use Hilsonxhero\ElasticVision\Domain\Syntax\Compound\BoolQuery;
+use Hilsonxhero\ElasticVision\Domain\Syntax\Compound\QueryType;
+use Hilsonxhero\ElasticVision\Application\SearchCommandInterface;
+use Hilsonxhero\ElasticVision\Domain\Query\QueryProperties\QueryProperty;
 
 class ScoutSearchCommandBuilder implements SearchCommandInterface
 {
@@ -46,6 +47,8 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
 
     private ?array $defaultSearchFields = null;
 
+    private array $queryProperties = [];
+
     private BoolQuery $boolQuery;
 
     public function __construct()
@@ -68,6 +71,7 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
         $normalizedBuilder->setBoolQuery($builder->compound ?? new BoolQuery());
         $normalizedBuilder->setLimit($builder->limit);
         $normalizedBuilder->setMinimumShouldMatch($builder->minimumShouldMatch ?? null);
+        $normalizedBuilder->queryProperties = $builder->queryProperties ?? [];
 
         $index = $builder->index ?: $builder->model->searchableAs();
 
@@ -242,6 +246,7 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
         $query->setSort($this->sort);
         $query->setLimit($this->limit);
         $query->setOffset($this->offset);
+        $query->addQueryProperties(...$this->queryProperties);
 
         foreach ($this->getAggregations() as $name => $aggregation) {
             $query->addAggregation($name, $aggregation);
@@ -266,6 +271,17 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
         $query->setQuery($compound);
 
         return $query->build();
+    }
+
+
+    public function addQueryProperties(QueryProperty ...$queryProperties): void
+    {
+        array_push($this->queryProperties, ...$queryProperties);
+    }
+
+    public function getQueryProperties(): array
+    {
+        return $this->queryProperties;
     }
 
     /** @return Sort[] */
