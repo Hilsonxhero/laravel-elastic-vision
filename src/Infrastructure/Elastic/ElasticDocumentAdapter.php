@@ -9,6 +9,7 @@ use Hilsonxhero\ElasticVision\Application\DocumentAdapterInterface;
 use Hilsonxhero\ElasticVision\Application\Operations\Bulk\BulkOperationInterface;
 use Hilsonxhero\ElasticVision\Application\Results;
 use Hilsonxhero\ElasticVision\Application\SearchCommandInterface;
+use Elastic\Elasticsearch\Exception\MissingParameterException;
 
 final class ElasticDocumentAdapter implements DocumentAdapterInterface
 {
@@ -37,10 +38,13 @@ final class ElasticDocumentAdapter implements DocumentAdapterInterface
 
     public function delete(string $index, $id): void
     {
-        $this->client->delete([
-            'index' => $index,
-            'id' => $id
-        ]);
+        try {
+            $this->client->delete([
+                'index' => $index,
+                'id' => $id
+            ]);
+        } catch (MissingParameterException) {
+        }
     }
 
     public function search(SearchCommandInterface $command): Results

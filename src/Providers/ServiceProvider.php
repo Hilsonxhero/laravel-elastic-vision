@@ -3,16 +3,17 @@
 namespace Hilsonxhero\ElasticVision\Providers;
 
 use Laravel\Scout\Builder;
+use Laravel\Scout\EngineManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Hilsonxhero\ElasticVision\Infrastructure\Scout\ElasticEngine;
-use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticDocumentAdapter;
+use Hilsonxhero\ElasticVision\Domain\Query\QueryProperties\QueryProperty;
 use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticIndexAdapter;
 use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticClientBuilder;
 use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticClientFactory;
+use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticDocumentAdapter;
 use Hilsonxhero\ElasticVision\Domain\Aggregations\AggregationSyntaxInterface;
 use Hilsonxhero\ElasticVision\Infrastructure\IndexManagement\ElasticIndexConfigurationRepository;
-use Laravel\Scout\EngineManager;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -83,6 +84,11 @@ class ServiceProvider extends BaseServiceProvider
 
         Builder::macro('aggregation', function (string $name, AggregationSyntaxInterface $aggregation) {
             $this->aggregations[$name] = $aggregation;
+            return $this;
+        });
+
+        Builder::macro('property', function (QueryProperty $queryProperty) {
+            $this->queryProperties[] = $queryProperty;
             return $this;
         });
 

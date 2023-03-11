@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Hilsonxhero\ElasticVision\Domain\Query;
 
-use Hilsonxhero\ElasticVision\Domain\Aggregations\AggregationSyntaxInterface;
 use Hilsonxhero\ElasticVision\Domain\Syntax\Sort;
+use Hilsonxhero\ElasticVision\Domain\Query\Rescoring;
 use Hilsonxhero\ElasticVision\Domain\Syntax\SyntaxInterface;
+use Hilsonxhero\ElasticVision\Domain\Query\QueryProperties\QueryProperty;
+use Hilsonxhero\ElasticVision\Domain\Aggregations\AggregationSyntaxInterface;
 
 class Query implements SyntaxInterface
 {
@@ -21,6 +23,9 @@ class Query implements SyntaxInterface
 
     /** @var Sort[] */
     private array $sort = [];
+
+    /** @var QueryProperty[]  */
+    private array $queryProperties = [];
 
     private SyntaxInterface $query;
 
@@ -67,12 +72,22 @@ class Query implements SyntaxInterface
             );
         }
 
-        return $query;
+        $allQueryProperties = array_map(
+            static fn (QueryProperty $queryProperties) => $queryProperties->build(),
+            $this->queryProperties
+        );
+
+        return array_merge($query, ...$allQueryProperties);
     }
 
     public function setOffset(?int $offset): void
     {
         $this->offset = $offset;
+    }
+
+    public function addQueryProperties(QueryProperty ...$properties): void
+    {
+        array_push($this->queryProperties, ...$properties);
     }
 
     public function setLimit(?int $limit): void
