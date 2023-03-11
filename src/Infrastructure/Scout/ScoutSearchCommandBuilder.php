@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
 
 class ScoutSearchCommandBuilder implements SearchCommandInterface
 {
+    private array $must_not = [];
+
     private array $must = [];
 
     private array $should = [];
@@ -54,7 +56,7 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
     public static function wrap(Builder $builder): ScoutSearchCommandBuilder
     {
         $normalizedBuilder = new self();
-
+        $normalizedBuilder->setMustNot($builder->must_not ?? []);
         $normalizedBuilder->setMust($builder->must ?? []);
         $normalizedBuilder->setShould($builder->should ?? []);
         $normalizedBuilder->setFilter($builder->filter ?? []);
@@ -76,6 +78,10 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
         $normalizedBuilder->setIndex($index);
 
         return $normalizedBuilder;
+    }
+    public function getMustNot(): array
+    {
+        return $this->must_not;
     }
 
     public function getMust(): array
@@ -136,6 +142,11 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
     public function getBoolQuery(): BoolQuery
     {
         return $this->boolQuery ?? new BoolQuery();
+    }
+
+    public function setMustNot(array $must_not): void
+    {
+        $this->must_not = $must_not;
     }
 
     public function setMust(array $must): void
@@ -237,7 +248,7 @@ class ScoutSearchCommandBuilder implements SearchCommandInterface
         }
 
         $compound = $this->boolQuery->clone();
-
+        $compound->addMany(QueryType::MUST_NOT, $this->getMustNot());
         $compound->addMany(QueryType::MUST, $this->getMust());
         $compound->addMany(QueryType::SHOULD, $this->getShould());
         $compound->addMany(QueryType::FILTER, $this->getFilter());

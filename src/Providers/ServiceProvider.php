@@ -56,6 +56,11 @@ class ServiceProvider extends BaseServiceProvider
             return $this;
         });
 
+        Builder::macro('must_not', function ($must_not) {
+            $this->must_not[] = $must_not;
+            return $this;
+        });
+
         Builder::macro('should', function ($should) {
             $this->should[] = $should;
             return $this;

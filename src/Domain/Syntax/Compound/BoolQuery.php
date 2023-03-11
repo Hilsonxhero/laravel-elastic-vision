@@ -13,6 +13,8 @@ class BoolQuery implements SyntaxInterface
 {
     private Collection $must;
 
+    private Collection $must_not;
+
     private Collection $should;
 
     private Collection $filter;
@@ -21,6 +23,7 @@ class BoolQuery implements SyntaxInterface
 
     public function __construct()
     {
+        $this->must_not = new Collection();
         $this->must = new Collection();
         $this->should = new Collection();
         $this->filter = new Collection();
@@ -29,11 +32,17 @@ class BoolQuery implements SyntaxInterface
     public function add(string $type, SyntaxInterface $syntax): void
     {
         match ($type) {
-           QueryType::MUST => $this->must->add($syntax),
-           QueryType::SHOULD => $this->should->add($syntax),
-           QueryType::FILTER => $this->filter->add($syntax),
-           default => throw new InvalidArgumentException($type . ' is not a valid type.'),
+            QueryType::MUST => $this->must->add($syntax),
+            QueryType::MUST_NOT => $this->must_not->add($syntax),
+            QueryType::SHOULD => $this->should->add($syntax),
+            QueryType::FILTER => $this->filter->add($syntax),
+            default => throw new InvalidArgumentException($type . ' is not a valid type.'),
         };
+    }
+
+    public function must_not(SyntaxInterface $syntax): void
+    {
+        $this->must_not->add($syntax);
     }
 
     public function must(SyntaxInterface $syntax): void
@@ -68,6 +77,7 @@ class BoolQuery implements SyntaxInterface
     public function build(): array
     {
         $boolQuery = [
+            'must_not' => $this->must_not->map(fn ($must) => $must->build())->toArray(),
             'must' => $this->must->map(fn ($must) => $must->build())->toArray(),
             'should' => $this->should->map(fn ($should) => $should->build())->toArray(),
             'filter' => $this->filter->map(fn ($filter) => $filter->build())->toArray(),
@@ -85,7 +95,7 @@ class BoolQuery implements SyntaxInterface
     public function clone(): self
     {
         $query = new BoolQuery();
-
+        $query->must_not = clone $this->must_not;
         $query->must = clone $this->must;
         $query->should = clone $this->should;
         $query->filter = clone $this->filter;
