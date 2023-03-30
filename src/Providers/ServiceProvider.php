@@ -4,6 +4,7 @@ namespace Hilsonxhero\ElasticVision\Providers;
 
 use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
+use Elastic\Elasticsearch\Client;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Hilsonxhero\ElasticVision\Infrastructure\Scout\ElasticEngine;
@@ -15,8 +16,27 @@ use Hilsonxhero\ElasticVision\Infrastructure\Elastic\ElasticDocumentAdapter;
 use Hilsonxhero\ElasticVision\Domain\Aggregations\AggregationSyntaxInterface;
 use Hilsonxhero\ElasticVision\Infrastructure\IndexManagement\ElasticIndexConfigurationRepository;
 
+
+/**
+ * @property array $must
+ * @property array $must_not
+ * @property array $should
+ * @property array $filter
+ * @property array $fields
+ * @property array $compound
+ * @property array $aggregations
+ * @property array $queryProperties
+ */
+#[\AllowDynamicProperties]
+
 class ServiceProvider extends BaseServiceProvider
 {
+
+    public array $bindings = [
+        IndexAdapterInterface::class => ElasticIndexAdapter::class,
+        DocumentAdapterInterface::class => ElasticDocumentAdapter::class,
+        IndexConfigurationRepositoryInterface::class => ElasticIndexConfigurationRepository::class,
+    ];
 
     public function register(): void
     {
@@ -29,20 +49,22 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(ElasticClientFactory::class, function () {
-            return new ElasticClientFactory(ElasticClientBuilder::fromConfig(config())->build());
-        });
 
-        $this->app->bind(IndexAdapterInterface::class, ElasticIndexAdapter::class);
-        $this->app->bind(DocumentAdapterInterface::class, ElasticDocumentAdapter::class);
-        $this->app->bind(IndexChangedCheckerInterface::class, ElasticIndexChangedChecker::class);
+        $this->app->when(ElasticClientFactory::class)
+            ->needs(Client::class)
+            ->give(static fn () => ElasticClientBuilder::fromConfig(config())->build());
 
-        $this->app->bind(IndexConfigurationRepositoryInterface::class, function () {
-            return new ElasticIndexConfigurationRepository(
-                config('elasticvision.indexes') ?? [],
-                config('elasticvision.prune_old_aliases'),
-            );
-        });
+        $this->app->when(ElasticDocumentAdapter::class)
+            ->needs(Client::class)
+            ->give(static fn (Application $app) => $app->make(ElasticClientFactory::class)->client());
+
+        $this->app->when(ElasticIndexConfigurationRepository::class)
+            ->needs('$indexConfigurations')
+            ->give(config('elasticvision.indexes') ?? []);
+
+        $this->app->when(ElasticIndexConfigurationRepository::class)
+            ->needs('$pruneOldAliases')
+            ->give(config('elasticvision.prune_old_aliases') ?? true);
 
         resolve(EngineManager::class)->extend('elastic', function (Application $app) {
             return new ElasticEngine(
