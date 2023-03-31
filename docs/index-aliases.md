@@ -40,16 +40,7 @@ class Post extends Model implements Explored, Aliased
 ```php
 return [
     'indexes' => [
-        'posts' => [
-            'aliased' => true,
-            'properties' => [
-                'id' => 'keyword',
-                'title' => 'text',
-                'created_at' => 'date',
-                'published' => 'boolean',
-                'author' => 'nested',
-            ],
-        ],
+        \App\Models\Product::class,
     ],
 ];
 ```

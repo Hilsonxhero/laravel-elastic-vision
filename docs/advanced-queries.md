@@ -7,6 +7,8 @@ From the Elasticsearch [documentation](https://www.elastic.co/guide/en/elasticse
 
 **must**: The query must appear in matching documents and will contribute to the score.
 
+**must_not**: The query must_not appear in matching documents and will contribute to the score.
+
 **should**: The query should appear in the matching document.
 
 **filter**: The query must appear in matching documents. However unlike must the score of the query will be ignored.
