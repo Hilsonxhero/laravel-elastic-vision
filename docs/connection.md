@@ -10,7 +10,7 @@ The most basic connection is with http without authorization.
 ```php
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'http',
         ],
@@ -36,7 +36,7 @@ To specify a username and password use the `auth` key with a `username` and a `p
 ```php
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'http',
             'auth' => [
@@ -54,7 +54,7 @@ Replace the auth part with API and give it your key and id.
 ```php
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'http',
             'api' => [
@@ -75,7 +75,7 @@ From Elastic 8 and upwards TLS is becoming the default, even in development. Thi
 ```php
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'http',
             'ssl' => [
@@ -90,7 +90,7 @@ To disable TLS verification set it to `false`. **NOT recommended for production*
 ```php
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'http',
             'ssl' => [
@@ -105,7 +105,7 @@ To disable TLS verification set it to `false`. **NOT recommended for production*
 ```
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'https',
             'ssl' => [
@@ -125,7 +125,7 @@ Elastic can also have multiple possible connections
 
     return [
         'connection' => [
-            'host' => 'localhost',
+            'host' => 'elasticsearch',
             'port' => '9200',
             'scheme' => 'http',
             'ssl' => [
@@ -135,12 +135,12 @@ Elastic can also have multiple possible connections
         ],
         'additionalConnections' => [
             [
-                'host' => 'localhost',
+                'host' => 'elasticsearch',
                 'port' => '9201',
                 'scheme' => 'http',
             ],
             [
-                'host' => 'localhost',
+                'host' => 'elasticsearch',
                 'port' => '9202',
                 'scheme' => 'http',
             ]

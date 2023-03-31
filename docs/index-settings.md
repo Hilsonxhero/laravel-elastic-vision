@@ -59,26 +59,7 @@ If you want to use the configuration array notation (see [mapping](mapping.md)),
 ```php
 return [
     'indexes' => [
-        'posts' => [
-            'settings' => [
-                'analysis' => [
-                    'analyzer' => [
-                        'standard_lowercase' => [
-                            'type' => 'custom',
-                            'tokenizer' => 'standard',
-                            'filter' => ['lowercase'],
-                        ],
-                    ],
-                ],
-            ],
-            'properties' => [
-                'id' => 'keyword',
-                'title' => 'text',
-                'created_at' => 'date',
-                'published' => 'boolean',
-                'author' => 'nested',
-            ],
-        ],
+        \App\Models\Product::class,
     ],
 ];
 ```

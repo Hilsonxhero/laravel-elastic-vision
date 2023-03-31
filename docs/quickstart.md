@@ -163,14 +163,9 @@ The only point where you should diverge from the docs is the driver for scout (i
 After that, you can define your first index in config/elasticvision.php:
 
 ```php
-'indexes' => [
-    'posts_index' => [
-        'properties' => [
-            'id' => 'keyword',
-            'title' => 'text',
-        ],
-    ]
-]
+    'indexes' => [
+        \App\Models\Product::class,
+    ],
 ```
 
 Upon saving the file, run `php artisan scout:import "App\Models\Post"` to add your posts as documents to the index.

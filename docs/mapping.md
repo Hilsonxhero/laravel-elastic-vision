@@ -21,23 +21,7 @@ any other types will be inferred by Elasticsearch.
 ```php
 return [
     'indexes' => [
-        'posts' => [
-            'properties' => [
-                'id' => 'keyword',
-                'title' => 'text',
-                'created_at' => 'date',
-                'published' => 'boolean',
-                'author' => 'nested',
-            ],
-        ],
-        'subscribers' => [
-            'properties' => [
-                'id' => 'keyword',
-                'firstname' => 'text',
-                'email' => 'text',
-                'subscribed_at' => 'date',
-            ],
-        ],
+        \App\Models\Product::class,
     ],
 ];
 ```
@@ -97,14 +81,6 @@ Perhaps interesting, you may combine the two mapping methods:
 return [
     'indexes' => [
         \App\Models\Post::class,
-        'subscribers' => [
-            'properties' => [
-                'id' => 'keyword',
-                'firstname' => 'text',
-                'email' => 'text',
-                'subscribed_at' => 'date',
-            ],
-        ],
     ],
 ];
 ```
